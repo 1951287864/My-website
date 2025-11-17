@@ -3,561 +3,232 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>的库 - 学习与认知的探索</title>
+    <title>的库 | 知识分享</title>
+    <!-- 引入 Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- 引入 Inter 字体，用于 Apple 极简风格 -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
     <style>
-        /* ===== 苹果风格设计系统 ===== */
-        :root {
-            --bg-primary: #ffffff;
-            --bg-secondary: #fbfbfd;
-            --text-primary: #1d1d1f;
-            --text-secondary: #86868b;
-            --accent: #0071e3;
-            --accent-hover: #0077ed;
-            --border: #d2d2d7;
-            --card-shadow: 0 4px 24px rgba(0, 0, 0, 0.04);
-            --transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-            --like-color: #ff375f;
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
+        /* 使用 Inter 字体 */
         body {
-            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", Helvetica, Arial, sans-serif;
-            background: var(--bg-secondary);
-            color: var(--text-primary);
-            line-height: 1.5;
-            -webkit-font-smoothing: antialiased;
+            font-family: 'Inter', sans-serif;
         }
-
-        /* ===== 毛玻璃导航栏（带搜索） ===== */
-        nav {
-            position: fixed;
-            top: 0;
-            width: 100%;
-            background: rgba(255, 255, 255, 0.85);
-            backdrop-filter: blur(20px);
-            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
-            z-index: 1000;
-            padding: 0 5%;
+        /* 玻璃拟态效果 for Navigation Bar (仅亮色模式) */
+        .glassmorphism {
+            backdrop-filter: blur(10px);
+            background: rgba(255, 255, 255, 0.7); /* Light Mode */
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1); /* 极细的边框 */
         }
-
-        .nav-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            height: 60px;
-        }
-
-        .logo {
-            font-size: 24px;
-            font-weight: 700;
-            letter-spacing: -0.5px;
-            color: var(--text-primary);
-        }
-
-        .search-box {
-            flex: 1;
-            max-width: 300px;
-            margin: 0 40px;
-            position: relative;
-        }
-
-        .search-input {
-            width: 100%;
-            padding: 8px 16px 8px 36px;
-            border: 1px solid var(--border);
-            border-radius: 20px;
-            font-size: 14px;
-            background: rgba(0, 0, 0, 0.03);
-            transition: var(--transition);
-        }
-
-        .search-input:focus {
-            outline: none;
-            border-color: var(--accent);
-            background: var(--bg-primary);
-        }
-
-        .search-icon {
-            position: absolute;
-            left: 12px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: var(--text-secondary);
-            font-size: 14px;
-        }
-
-        .nav-links {
-            display: flex;
-            gap: 40px;
-        }
-
-        .nav-links a {
-            text-decoration: none;
-            color: var(--text-primary);
-            font-size: 14px;
-            transition: var(--transition);
-            opacity: 0.8;
-        }
-
-        .nav-links a:hover {
-            opacity: 1;
-        }
-
-        /* ===== 主容器 ===== */
+        /* 确保内容在移动端也保持良好排版，避免水平滚动 */
         .container {
-            max-width: 980px;
-            margin: 0 auto;
-            padding: 120px 20px 80px;
+            width: 100%;
         }
-
-        /* ===== Hero 区域 ===== */
-        .hero {
-            text-align: center;
-            margin-bottom: 80px;
-        }
-
-        .hero h1 {
-            font-size: 56px;
-            font-weight: 600;
-            letter-spacing: -1.5px;
-            margin-bottom: 20px;
-            line-height: 1.1;
-        }
-
-        .hero p {
-            font-size: 21px;
-            color: var(--text-secondary);
-            max-width: 600px;
-            margin: 0 auto;
-        }
-
-        /* ===== 分类筛选器 ===== */
-        .category-filter {
-            display: flex;
-            gap: 16px;
-            margin-bottom: 40px;
-            flex-wrap: wrap;
-            justify-content: center;
-        }
-
-        .category-btn {
-            padding: 8px 20px;
-            border: 1px solid var(--border);
-            border-radius: 20px;
-            background: var(--bg-primary);
-            color: var(--text-secondary);
-            font-size: 14px;
-            cursor: pointer;
-            transition: var(--transition);
-            outline: none;
-        }
-
-        .category-btn:hover {
-            border-color: var(--accent);
-            color: var(--accent);
-        }
-
-        .category-btn.active {
-            background: var(--accent);
-            color: white;
-            border-color: var(--accent);
-        }
-
-        /* ===== 知识卡片列表 ===== */
-        .posts-grid {
-            display: grid;
-            gap: 24px;
-        }
-
-        .post-card {
-            background: var(--bg-primary);
-            border-radius: 18px;
-            padding: 32px;
-            box-shadow: var(--card-shadow);
-            transition: var(--transition);
-            cursor: pointer;
-        }
-
-        .post-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 8px 40px rgba(0, 0, 0, 0.08);
-        }
-
-        .post-header {
-            margin-bottom: 16px;
-        }
-
-        .post-title {
-            font-size: 24px;
-            font-weight: 600;
-            letter-spacing: -0.5px;
-            margin-bottom: 8px;
-            line-height: 1.3;
-        }
-
-        .post-meta {
-            display: flex;
-            gap: 16px;
-            font-size: 14px;
-            color: var(--text-secondary);
-        }
-
-        .post-excerpt {
-            color: var(--text-secondary);
-            line-height: 1.6;
-            margin-bottom: 20px;
-        }
-
-        /* ===== 互动功能区 ===== */
-        .post-actions {
-            display: flex;
-            gap: 24px;
-            padding-top: 20px;
-            border-top: 1px solid var(--border);
-        }
-
-        .action-btn {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            padding: 6px 12px;
-            border: none;
-            background: none;
-            color: var(--text-secondary);
-            font-size: 14px;
-            cursor: pointer;
-            transition: var(--transition);
-            border-radius: 8px;
-        }
-
-        .action-btn:hover {
-            background: rgba(0, 113, 227, 0.05);
-            color: var(--accent);
-        }
-
-        .action-btn.liked {
-            color: var(--like-color);
-            background: rgba(255, 55, 95, 0.05);
-        }
-
-        .action-btn svg {
-            width: 18px;
-            height: 18px;
-        }
-
-        /* ===== 悬浮发布按钮 ===== */
-        .fab {
-            position: fixed;
-            bottom: 40px;
-            right: 40px;
-            width: 56px;
-            height: 56px;
-            border-radius: 50%;
-            background: var(--accent);
-            color: white;
-            border: none;
-            font-size: 24px;
-            cursor: pointer;
-            box-shadow: 0 4px 24px rgba(0, 113, 227, 0.3);
-            transition: var(--transition);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 999;
-        }
-
-        .fab:hover {
-            background: var(--accent-hover);
-            transform: scale(1.1);
-        }
-
-        /* ===== 响应式 ===== */
-        @media (max-width: 768px) {
-            .hero h1 {
-                font-size: 40px;
-            }
-            
-            .hero p {
-                font-size: 18px;
-            }
-            
-            .container {
-                padding-top: 100px;
-            }
-            
-            .post-card {
-                padding: 24px;
-            }
-            
-            .search-box {
-                display: none;
-            }
-            
-            .nav-links {
-                display: none;
-            }
+        /* Modal 蒙版背景模糊，提升质感 */
+        .modal-overlay {
+            backdrop-filter: blur(5px);
+            background-color: rgba(0, 0, 0, 0.4);
         }
     </style>
 </head>
-<body>
-    <!-- 导航栏 -->
-    <nav>
-        <div class="nav-container">
-            <div class="logo">的库</div>
-            <div class="search-box">
-                <span class="search-icon">🔍</span>
-                <input type="text" class="search-input" placeholder="搜索文章、标签..." id="searchInput">
-            </div>
-            <div class="nav-links">
-                <a href="#learning">学习</a>
-                <a href="#cognition">认知</a>
-                <a href="#about">关于</a>
-            </div>
-        </div>
-    </nav>
+<!-- 保持纯净的亮色背景和文字颜色 -->
+<body class="bg-slate-100 text-slate-900 antialiased">
 
-    <!-- 主容器 -->
-    <div class="container">
-        <!-- Hero 区域 -->
-        <section class="hero">
-            <h1>的库</h1>
-            <p>构建你的认知操作系统，收藏每一个改变思维的学习瞬间</p>
+    <!-- 1. 导航栏 (固定在顶部, 玻璃拟态效果) -->
+    <header class="sticky top-0 z-50 w-full glassmorphism border-b border-slate-200/60">
+        <div class="container mx-auto max-w-5xl px-4">
+            <nav class="flex h-16 items-center justify-between">
+                <!-- 网站标题 -->
+                <a href="#" class="text-xl font-bold text-slate-800">
+                    的库
+                </a>
+                
+                <!-- 导航链接 -->
+                <div class="flex items-center space-x-6">
+                    <a href="#" class="text-sm font-medium text-slate-700 hover:text-blue-600 transition-colors hidden sm:block">首页</a>
+                    <a href="#" class="text-sm font-medium text-slate-700 hover:text-blue-600 transition-colors hidden sm:block">文章分类</a>
+                    
+                    <!-- 1. 将 "关于我" 链接改为按钮，用于触发模态框 -->
+                    <button id="open-about-modal" class="text-sm font-medium text-slate-700 hover:text-blue-600 transition-colors hidden sm:block focus:outline-none">
+                        关于我
+                    </button>
+                    
+                    <!-- "上传" 按钮 -->
+                    <a href="#" class="rounded-full bg-blue-600 px-4 py-1.5 text-sm font-semibold text-white shadow-md hover:bg-blue-700 transition-all">
+                        分享新知
+                    </a>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- 2. 主体内容 -->
+    <main class="container mx-auto max-w-5xl px-4 py-12 md:py-20">
+
+        <!-- 2.1 页面主标题 (Apple 风格的巨大标题) -->
+        <section class="text-center mb-16 md:mb-24">
+            <h1 class="text-5xl md:text-7xl font-extrabold tracking-tighter text-slate-900 mb-6">
+                分享，让知识流动。
+            </h1>
+            <p class="text-lg md:text-xl text-slate-600 max-w-2xl mx-auto">
+                欢迎来到我的个人知识论坛。这里是我对技术、设计和思考的沉淀与分享。
+            </p>
         </section>
 
-        <!-- 分类筛选 -->
-        <div class="category-filter">
-            <button class="category-btn active" data-category="all">全部</button>
-            <button class="category-btn" data-category="learning">学习方法</button>
-            <button class="category-btn" data-category="cognition">认知科学</button>
-            <button class="category-btn" data-category="thinking">思维模式</button>
-            <button class="category-btn" data-category="methodology">方法论</button>
-            <button class="category-btn" data-category="reading">阅读笔记</button>
+        <!-- 2.2 文章卡片网格 -->
+        <section>
+            <!-- 分类标题 -->
+            <h2 class="text-2xl font-bold text-slate-800 mb-8">最新分享</h2>
+
+            <!-- 网格布局 -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+
+                <!-- 卡片 1 (大卡片, 封面图在左) -->
+                <a href="#" class="group col-span-1 md:col-span-2 bg-white rounded-2xl shadow-sm border border-slate-200/80 overflow-hidden flex flex-col md:flex-row items-center hover:shadow-lg transition-all duration-300">
+                    <!-- 封面图 -->
+                    <div class="h-60 md:h-auto w-full md:w-1/2 bg-slate-200 flex items-center justify-center p-6">
+                         <img src="https://placehold.co/600x400/3B82F6/FFFFFF?text=AI+Design+Cover" alt="AI设计封面" class="object-cover w-full h-full rounded-lg transition-transform duration-300 group-hover:scale-[1.03]">
+                    </div>
+                    <div class="p-8 md:p-12 w-full md:w-1/2">
+                        <span class="text-sm font-semibold text-blue-600 mb-2 block">深度学习</span>
+                        <h3 class="text-3xl font-bold text-slate-900 mb-4 group-hover:text-blue-700 transition-colors">
+                            AI 如何改变现代设计流程
+                        </h3>
+                        <p class="text-slate-600 mb-6">
+                            探索人工智能在创意产业中的应用，从自动化任务到生成式艺术，AI 正在重塑我们对设计的认知...
+                        </p>
+                        <div class="flex items-center text-sm text-slate-500">
+                            <span>作者：[你的名字]</span>
+                            <span class="mx-2">&middot;</span>
+                            <span>2025年11月14日</span>
+                        </div>
+                    </div>
+                </a>
+
+                <!-- 卡片 2 (小卡片) -->
+                <a href="#" class="group bg-white rounded-2xl shadow-sm border border-slate-200/80 overflow-hidden hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1">
+                    <div class="h-48 w-full bg-slate-200 flex items-center justify-center">
+                        <img src="https://placehold.co/600x300/10B981/FFFFFF?text=FrontEnd+Performance" alt="前端性能封面" class="object-cover w-full h-full">
+                    </div>
+                    <div class="p-6">
+                        <span class="text-sm font-semibold text-green-600 mb-2 block">Web 开发</span>
+                        <h3 class="text-xl font-bold text-slate-900 mb-3 group-hover:text-green-700 transition-colors">
+                            现代前端框架的性能对比
+                        </h3>
+                        <p class="text-slate-600 text-sm mb-4">
+                            React, Vue, Svelte... 哪一个才是未来的性能之王？本文将深入分析它们的虚拟 DOM 和编译时...
+                        </p>
+                        <span class="text-sm font-medium text-slate-500">2025年11月10日</span>
+                    </div>
+                </a>
+
+                <!-- 卡片 3 (小卡片) -->
+                <a href="#" class="group bg-white rounded-2xl shadow-sm border border-slate-200/80 overflow-hidden hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1">
+                    <div class="h-48 w-full bg-slate-200 flex items-center justify-center">
+                        <img src="https://placehold.co/600x300/F97316/FFFFFF?text=Minimalism+Design" alt="极简设计封面" class="object-cover w-full h-full">
+                    </div>
+                    <div class="p-6">
+                        <span class="text-sm font-semibold text-orange-600 mb-2 block">设计思考</span>
+                        <h3 class="text-xl font-bold text-slate-900 mb-3 group-hover:text-orange-700 transition-colors">
+                            极简主义设计的核心原则
+                        </h3>
+                        <p class="text-slate-600 text-sm mb-4">
+                            少即是多。本文探讨了留白、排版和色彩在极简主义设计中的运用，以及它如何提升用户体验...
+                        </p>
+                        <span class="text-sm font-medium text-slate-500">2025年11月5日</span>
+                    </div>
+                </a>
+
+            </div>
+        </section>
+
+    </main>
+
+    <!-- 3. 页脚 -->
+    <footer class="border-t border-slate-200 mt-20">
+        <div class="container mx-auto max-w-5xl px-4 py-10 text-center text-sm text-slate-500">
+            <p>&copy; 2025 的库. All rights reserved.</p>
+            <div class="mt-2 space-x-4">
+                <a href="#" class="hover:text-slate-700 transition-colors">隐私政策</a>
+                <a href="#" class="hover:text-slate-700 transition-colors">联系我们</a>
+            </div>
         </div>
-
-        <!-- 文章列表 -->
-        <div class="posts-grid" id="postsGrid">
-            <!-- 示例文章卡片 1 -->
-            <article class="post-card" data-id="1">
-                <div class="post-header">
-                    <h2 class="post-title">间隔重复：对抗遗忘曲线的科学记忆法</h2>
-                    <div class="post-meta">
-                        <span>2024年1月15日</span>
-                        <span>·</span>
-                        <span>学习方法</span>
-                        <span>·</span>
-                        <span>6分钟阅读</span>
-                    </div>
-                </div>
-                <p class="post-excerpt">
-                    为什么学过的知识总记不住？基于艾宾浩斯遗忘曲线原理，间隔重复算法能帮你将短期记忆转化为长期记忆。本文详解Anki等工具的使用策略...
-                </p>
-                <div class="post-actions">
-                    <button class="action-btn like-btn" onclick="toggleLike(this, 1)">
-                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
-                        </svg>
-                        <span class="like-count">24</span>
-                    </button>
-                    <button class="action-btn comment-btn" onclick="showComments(1)">
-                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path>
-                        </svg>
-                        <span>8 条讨论</span>
-                    </button>
-                    <button class="action-btn share-btn" onclick="shareArticle(1)">
-                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.367 2.684 3 3 0 00-5.367-2.684z"></path>
-                        </svg>
-                        <span>分享</span>
-                    </button>
-                </div>
-            </article>
-
-            <!-- 示例文章卡片 2 -->
-            <article class="post-card" data-id="2">
-                <div class="post-header">
-                    <h2 class="post-title">费曼技巧：用输出倒逼输入的深度学习方法</h2>
-                    <div class="post-meta">
-                        <span>2024年1月12日</span>
-                        <span>·</span>
-                        <span>学习方法</span>
-                        <span>·</span>
-                        <span>5分钟阅读</span>
-                    </div>
-                </div>
-                <p class="post-excerpt">
-                    "如果你不能简单地解释一件事，说明你还没有真正理解它。" 通过向他人讲解来检验和深化自己的理解，这个方法比被动阅读高效十倍...
-                </p>
-                <div class="post-actions">
-                    <button class="action-btn like-btn" onclick="toggleLike(this, 2)">
-                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
-                        </svg>
-                        <span class="like-count">42</span>
-                    </button>
-                    <button class="action-btn comment-btn" onclick="showComments(2)">
-                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path>
-                        </svg>
-                        <span>15 条讨论</span>
-                    </button>
-                    <button class="action-btn share-btn" onclick="shareArticle(2)">
-                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.367 2.684 3 3 0 00-5.367-2.684z"></path>
-                        </svg>
-                        <span>分享</span>
-                    </button>
-                </div>
-            </article>
-
-            <!-- 示例文章卡片 3 -->
-            <article class="post-card" data-id="3">
-                <div class="post-header">
-                    <h2 class="post-title">认知卸载：如何通过外部工具解放大脑</h2>
-                    <div class="post-meta">
-                        <span>2024年1月8日</span>
-                        <span>·</span>
-                        <span>认知科学</span>
-                        <span>·</span>
-                        <span>7分钟阅读</span>
-                    </div>
-                </div>
-                <p class="post-excerpt">
-                    大脑不是用来记忆的，而是用来思考的。将信息外部化、结构化，才能真正释放认知资源进行创造性思考。本文介绍Notion/Obsidian等工具的认知科学原理...
-                </p>
-                <div class="post-actions">
-                    <button class="action-btn like-btn" onclick="toggleLike(this, 3)">
-                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
-                        </svg>
-                        <span class="like-count">56</span>
-                    </button>
-                    <button class="action-btn comment-btn" onclick="showComments(3)">
-                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path>
-                        </svg>
-                        <span>23 条讨论</span>
-                    </button>
-                    <button class="action-btn share-btn" onclick="shareArticle(3)">
-                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.367 2.684 3 3 0 00-5.367-2.684z"></path>
-                        </svg>
-                        <span>分享</span>
-                    </button>
-                </div>
-            </article>
+    </footer>
+    
+    <!-- 4. 微信二维码模态框 (Modal) -->
+    <!-- 默认隐藏 (hidden)，点击后显示 -->
+    <div id="about-modal" class="fixed inset-0 z-[100] hidden items-center justify-center p-4 modal-overlay">
+        <!-- 模态框内容卡片 -->
+        <div class="bg-white rounded-2xl shadow-2xl p-8 max-w-sm w-full transform transition-all duration-300 scale-100 opacity-100">
+            <!-- 标题和关闭按钮 -->
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="text-2xl font-bold text-slate-900">联系我</h3>
+                <!-- 关闭按钮 (使用 SVG 图标，符合极简风格) -->
+                <button id="close-about-modal" class="text-slate-500 hover:text-slate-700 transition-colors">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+            </div>
+            
+            <!-- 二维码内容 -->
+            <div class="text-center">
+                <!-- !!! 这是相对路径。请确保你的微信二维码图片（文件名为 qr-wechat.png）位于 index.html 所在的同一目录下 !!! -->
+                <img id="wechat-qr-code" 
+                     src="./qr-wechat.png" 
+                     alt="微信二维码" 
+                     class="w-48 h-48 mx-auto mb-4 rounded-lg shadow-md border border-slate-200"
+                     onerror="this.onerror=null; this.src='https://placehold.co/200x200/cccccc/666666?text=QR+Code+Missing'; this.title='图片未找到，请检查路径。';">
+                
+                <p class="text-sm text-slate-600 mb-1">扫描上方二维码添加我的微信，</p>
+                <p class="text-sm font-medium text-blue-600">一起交流和学习！</p>
+            </div>
         </div>
     </div>
 
-    <!-- 悬浮发布按钮 -->
-    <button class="fab" onclick="publishArticle()" title="发布新文章">+</button>
-
+    <!-- 5. 模态框控制脚本 -->
     <script>
-        // ===== 所有互动功能实现 =====
+        // 获取需要的 DOM 元素
+        const openModalBtn = document.getElementById('open-about-modal');
+        const closeModalBtn = document.getElementById('close-about-modal');
+        const modal = document.getElementById('about-modal');
 
-        // 1. 搜索功能
-        const searchInput = document.getElementById('searchInput');
-        searchInput.addEventListener('input', (e) => {
-            const query = e.target.value.toLowerCase();
-            const posts = document.querySelectorAll('.post-card');
-            
-            posts.forEach(post => {
-                const title = post.querySelector('.post-title').textContent.toLowerCase();
-                const excerpt = post.querySelector('.post-excerpt').textContent.toLowerCase();
-                
-                if (title.includes(query) || excerpt.includes(query)) {
-                    post.style.display = 'block';
-                } else {
-                    post.style.display = query ? 'none' : 'block';
+        // 打开模态框
+        if (openModalBtn) {
+            openModalBtn.addEventListener('click', function() {
+                modal.classList.remove('hidden');
+                document.body.classList.add('overflow-hidden'); // 防止页面在模态框打开时滚动
+            });
+        }
+
+        // 关闭模态框的逻辑
+        function closeAboutModal() {
+            modal.classList.add('hidden');
+            document.body.classList.remove('overflow-hidden');
+        }
+
+        // 绑定关闭按钮
+        if (closeModalBtn) {
+            closeModalBtn.addEventListener('click', closeAboutModal);
+        }
+
+        // 点击模态框背景时关闭 (确保点击的是 modal 本身，而不是 modal 内容)
+        if (modal) {
+            modal.addEventListener('click', function(e) {
+                if (e.target === modal) {
+                    closeAboutModal();
                 }
             });
-        });
-
-        // 2. 分类筛选
-        const categoryBtns = document.querySelectorAll('.category-btn');
-        categoryBtns.forEach(btn => {
-            btn.addEventListener('click', () => {
-                categoryBtns.forEach(b => b.classList.remove('active'));
-                btn.classList.add('active');
-                
-                const category = btn.dataset.category;
-                console.log('筛选分类:', category);
-                
-                // 这里可以添加实际的筛选逻辑
-                // 比如：filterPostsByCategory(category);
-            });
-        });
-
-        // 3. 点赞功能
-        const likeStates = new Map(); // 存储每个用户的点赞状态
+        }
         
-        function toggleLike(btn, postId) {
-            const likeCountSpan = btn.querySelector('.like-count');
-            let count = parseInt(likeCountSpan.textContent);
-            
-            if (btn.classList.contains('liked')) {
-                btn.classList.remove('liked');
-                likeCountSpan.textContent = count - 1;
-                likeStates.set(postId, false);
-            } else {
-                btn.classList.add('liked');
-                likeCountSpan.textContent = count + 1;
-                likeStates.set(postId, true);
+        // 按下 ESC 键时关闭
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && !modal.classList.contains('hidden')) {
+                closeAboutModal();
             }
-            
-            // 可以在这里调用后端API同步数据
-            console.log(`文章 ${postId} 点赞状态:`, likeStates.get(postId));
-        }
-
-        // 4. 评论功能
-        function showComments(postId) {
-            alert(`打开文章 ${postId} 的评论弹窗\n\n这里可以展示：\n- 已有评论列表\n- 发表评论的输入框\n- 点赞、回复等互动`);
-            // 实际实现：打开一个模态框展示评论
-        }
-
-        // 5. 分享功能
-        function shareArticle(postId) {
-            const postCard = document.querySelector(`[data-id="${postId}"]`);
-            const title = postCard.querySelector('.post-title').textContent;
-            
-            if (navigator.share) {
-                navigator.share({
-                    title: title,
-                    text: '来自「的库」的优质内容',
-                    url: window.location.href + `#post-${postId}`
-                });
-            } else {
-                // 复制链接到剪贴板
-                navigator.clipboard.writeText(window.location.href + `#post-${postId}`).then(() => {
-                    alert('链接已复制到剪贴板！');
-                });
-            }
-        }
-
-        // 6. 发布文章
-        function publishArticle() {
-            alert('打开发布编辑器\n\n功能包括：\n- Markdown编辑器\n- 分类选择\n- 标签系统\n- 草稿保存');
-            // 实际实现：跳转到发布页面或打开编辑器模态框
-        }
-
-        // 7. 文章卡片点击（跳转到详情）
-        document.querySelectorAll('.post-card').forEach(card => {
-            card.addEventListener('click', (e) => {
-                // 如果点击的是按钮区域，不跳转
-                if (e.target.closest('.post-actions')) return;
-                
-                const postId = card.dataset.id;
-                console.log(`跳转到文章 ${postId} 详情页`);
-                // window.location.href = `/post/${postId}`;
-            });
         });
     </script>
+
 </body>
 </html>
