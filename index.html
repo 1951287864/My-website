@@ -30,7 +30,7 @@
                         'blob': 'blob 10s infinite',
                         'float': 'float 6s ease-in-out infinite',
                         'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
-                        'slide-up': 'slideUp 0.3s ease-out forwards',
+                        'slide-up': 'slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards',
                     },
                     keyframes: {
                         blob: {
@@ -44,7 +44,7 @@
                             '50%': { transform: 'translateY(-10px)' },
                         },
                         slideUp: {
-                            '0%': { transform: 'translateY(10px)', opacity: 0 },
+                            '0%': { transform: 'translateY(20px)', opacity: 0 },
                             '100%': { transform: 'translateY(0)', opacity: 1 },
                         }
                     }
@@ -66,7 +66,7 @@
             width: 100%;
             height: 100%;
             pointer-events: none;
-            z-index: 50;
+            z-index: 40; /* 确保在内容之上，但在 Modal/Navbar/Footer 之下 */
             opacity: 0.04;
             background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
         }
@@ -90,19 +90,16 @@
         .spotlight-card {
             position: relative;
             overflow: hidden;
-            /* 亮色模式默认背景 */
             background: rgba(255, 255, 255, 0.6);
             border: 1px solid rgba(0, 0, 0, 0.05);
             transition: all 0.3s ease;
         }
         
-        /* 暗色模式覆盖 */
         .dark .spotlight-card {
             background: rgba(255, 255, 255, 0.03);
             border: 1px solid rgba(255, 255, 255, 0.05);
         }
         
-        /* 光圈层 */
         .spotlight-card::before {
             content: "";
             position: absolute;
@@ -114,7 +111,6 @@
             transition: opacity 0.3s;
             pointer-events: none;
             z-index: 1;
-            /* 亮色模式的光晕：淡靛蓝色 */
             background: radial-gradient(
                 800px circle at var(--mouse-x) var(--mouse-y), 
                 rgba(99, 102, 241, 0.15), 
@@ -122,7 +118,6 @@
             );
         }
         
-        /* 暗色模式的光晕：淡白色 */
         .dark .spotlight-card::before {
             background: radial-gradient(
                 800px circle at var(--mouse-x) var(--mouse-y), 
@@ -135,7 +130,6 @@
             opacity: 1;
         }
 
-        /* 边框高亮层 */
         .spotlight-card::after {
             content: "";
             position: absolute;
@@ -143,7 +137,6 @@
             width: 100%;
             top: 0;
             left: 0;
-            /* 统一使用靛蓝高亮，但在亮色下更明显一点 */
             background: radial-gradient(
                 600px circle at var(--mouse-x) var(--mouse-y), 
                 rgba(99, 102, 241, 0.4), 
@@ -157,7 +150,7 @@
 
         /* 文字镂空效果 - 自适应 */
         .text-stroke {
-            -webkit-text-stroke: 1px rgba(0, 0, 0, 0.05); /* 亮色模式下的描边很淡 */
+            -webkit-text-stroke: 1px rgba(0, 0, 0, 0.05);
             color: transparent;
         }
         .dark .text-stroke {
@@ -186,13 +179,12 @@
             transform-origin: bottom left;
         }
 
-        /* 背景 Blob 的混合模式调整 */
         .blob-bg {
-            mix-blend-mode: multiply; /* 亮色模式用水彩效果 */
+            mix-blend-mode: multiply;
             opacity: 0.6;
         }
         .dark .blob-bg {
-            mix-blend-mode: screen; /* 暗色模式用发光效果 */
+            mix-blend-mode: screen;
             opacity: 1;
         }
     </style>
@@ -230,12 +222,11 @@
         </div>
     </nav>
 
-    <main class="relative pt-32 pb-20 px-6">
+    <main class="relative pt-32 pb-20 px-6 z-10">
         <div class="max-w-7xl mx-auto">
             
             <!-- HERO -->
             <section class="relative min-h-[60vh] flex flex-col justify-center mb-32">
-                <!-- 装饰字 IDEAS -->
                 <h1 class="absolute top-[-50px] left-[-20px] text-[12rem] md:text-[16rem] font-bold text-stroke opacity-30 dark:opacity-20 select-none pointer-events-none leading-none z-0 transition-colors">
                     IDEAS
                 </h1>
@@ -275,17 +266,14 @@
                 </div>
 
                 <div class="grid grid-cols-1 md:grid-cols-12 gap-6" id="cards-container">
-                    
                     <!-- Card 1 -->
                     <article class="spotlight-card group md:col-span-8 rounded-3xl relative h-[450px] flex flex-col justify-end p-8 md:p-10 shadow-sm dark:shadow-none">
                         <div class="absolute inset-0 z-0">
                             <img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80" 
                                  alt="Abstract 3D" 
                                  class="w-full h-full object-cover opacity-80 dark:opacity-60 group-hover:scale-105 transition-all duration-700">
-                            <!-- 渐变遮罩：亮色模式用白渐变，暗色模式用黑渐变 -->
                             <div class="absolute inset-0 bg-gradient-to-t from-slate-100 via-slate-100/50 to-transparent dark:from-darkBg dark:via-darkBg/60 dark:to-transparent"></div>
                         </div>
-                        
                         <div class="relative z-10 pointer-events-none">
                             <div class="flex items-center gap-3 mb-4">
                                 <span class="px-3 py-1 text-[10px] font-mono font-bold border border-slate-400/50 dark:border-white/20 text-slate-800 dark:text-white rounded uppercase bg-white/50 dark:bg-black/50 backdrop-blur-sm" data-zh="深度阅读" data-en="Deep Dive">
@@ -378,8 +366,8 @@
         </div>
     </main>
 
-    <!-- 页脚 -->
-    <footer class="border-t border-slate-200 dark:border-white/5 bg-white/50 dark:bg-black/20 backdrop-blur-sm mt-20 relative transition-colors duration-500">
+    <!-- 页脚 (FIXED: 添加 z-50 解决被卡片遮挡的问题) -->
+    <footer class="border-t border-slate-200 dark:border-white/5 bg-white/50 dark:bg-black/20 backdrop-blur-sm mt-20 relative transition-colors duration-500 z-50">
         <div class="max-w-7xl mx-auto px-6 py-12 flex flex-col md:flex-row justify-between items-center gap-6">
             <div class="text-slate-500 text-sm font-mono">
                 &copy; 2025 DEKU_ARCHIVE. SYSTEM_NORMAL.
@@ -390,10 +378,8 @@
                 <a href="#" class="text-slate-500 hover:text-slate-900 dark:hover:text-white transition-colors text-sm" data-zh="TWITTER" data-en="TWITTER">TWITTER</a>
                 <button id="footer-about" class="text-slate-500 hover:text-slate-900 dark:hover:text-white transition-colors text-sm" data-zh="微信" data-en="WECHAT">微信</button>
                 
-                <!-- 分割线 -->
                 <div class="w-[1px] h-4 bg-slate-300 dark:bg-slate-700"></div>
 
-                <!-- 设置按钮 -->
                 <div class="relative">
                     <button id="settings-btn" class="text-slate-500 hover:text-slate-900 dark:hover:text-white transition-colors flex items-center gap-1 text-sm group">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4 group-hover:rotate-90 transition-transform duration-500">
@@ -403,10 +389,8 @@
                         <span data-zh="设置" data-en="SETTINGS">设置</span>
                     </button>
 
-                    <!-- 设置菜单 (Pop-up) -->
                     <div id="settings-panel" class="hidden absolute bottom-10 right-0 mb-2 w-56 bg-white dark:bg-[#0f172a] border border-slate-200 dark:border-white/10 rounded-xl shadow-2xl overflow-hidden animate-slide-up z-50">
                         
-                        <!-- 语言设置 -->
                         <div class="px-4 py-3 border-b border-slate-100 dark:border-white/5">
                             <span class="text-[10px] font-mono text-slate-400 dark:text-slate-500 uppercase" data-zh="语言" data-en="LANGUAGE">语言</span>
                         </div>
@@ -421,7 +405,6 @@
                             </button>
                         </div>
 
-                        <!-- 外观设置 -->
                         <div class="px-4 py-3 border-t border-b border-slate-100 dark:border-white/5">
                             <span class="text-[10px] font-mono text-slate-400 dark:text-slate-500 uppercase" data-zh="界面外观" data-en="APPEARANCE">界面外观</span>
                         </div>
@@ -530,19 +513,16 @@
         const settingsBtn = document.getElementById('settings-btn');
         const settingsPanel = document.getElementById('settings-panel');
         
-        // 语言按钮
         const langZhBtn = document.getElementById('lang-zh');
         const langEnBtn = document.getElementById('lang-en');
         const dotZh = document.getElementById('dot-zh');
         const dotEn = document.getElementById('dot-en');
         
-        // 主题按钮
         const themeDarkBtn = document.getElementById('theme-dark');
         const themeLightBtn = document.getElementById('theme-light');
         const dotDark = document.getElementById('dot-dark');
         const dotLight = document.getElementById('dot-light');
 
-        // 切换设置面板显示
         settingsBtn.addEventListener('click', (e) => {
             e.stopPropagation();
             settingsPanel.classList.toggle('hidden');
@@ -554,7 +534,6 @@
             }
         });
 
-        // 语言切换
         function setLanguage(lang) {
             const elements = document.querySelectorAll('[data-zh]');
             elements.forEach(el => {
@@ -569,7 +548,6 @@
             }
         }
 
-        // 主题切换
         function setTheme(theme) {
             const html = document.documentElement;
             if (theme === 'dark') {
@@ -585,7 +563,6 @@
             }
         }
 
-        // 辅助函数：更新选中项的文字样式
         function updateActiveStyle(activeBtn, inactiveBtn) {
             activeBtn.classList.remove('text-slate-500', 'dark:text-slate-400');
             activeBtn.classList.add('text-slate-900', 'dark:text-white');
@@ -599,12 +576,11 @@
         themeDarkBtn.addEventListener('click', () => setTheme('dark'));
         themeLightBtn.addEventListener('click', () => setTheme('light'));
 
-        // 初始化主题 (检查本地存储)
         const savedTheme = localStorage.getItem('theme');
         if (savedTheme === 'light') {
             setTheme('light');
         } else {
-            setTheme('dark'); // 默认为暗色
+            setTheme('dark');
         }
 
     </script>
